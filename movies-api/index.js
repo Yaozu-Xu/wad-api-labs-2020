@@ -2,7 +2,7 @@ import './db';
 import dotenv from 'dotenv';
 import express from 'express';
 import session from 'express-session';
-import authenticate from './authenticate';
+import passport from './authenticate';
 import bodyParser from 'body-parser';
 import {loadUsers} from './seedData'
 import moviesRouter from './api/movies';
@@ -36,11 +36,12 @@ app.use(session({
 }));
 
 app.use(express.static('public'));
-//configure body-parser
+// initialise passport​
+app.use(passport.initialize());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-//update /api/Movie route
-app.use('/api/movies', authenticate, moviesRouter);
+// Add passport.authenticate(..)  to middleware stack for protected routes​
+app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/genres', genresRouter)
 app.use(errHandler);
