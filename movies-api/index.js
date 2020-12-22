@@ -1,6 +1,8 @@
 import './db';
 import dotenv from 'dotenv';
 import express from 'express';
+import session from 'express-session';
+import authenticate from './authenticate';
 import bodyParser from 'body-parser';
 import {loadUsers} from './seedData'
 import moviesRouter from './api/movies';
@@ -26,11 +28,19 @@ if (process.env.SEED_DB) {
   loadUsers();
 }
 
+//session middleware
+app.use(session({
+  secret: 'ilikecake',
+  resave: true,
+  saveUninitialized: true
+}));
+
 app.use(express.static('public'));
 //configure body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use('/api/movies', moviesRouter);
+//update /api/Movie route
+app.use('/api/movies', authenticate, moviesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/genres', genresRouter)
 app.use(errHandler);
