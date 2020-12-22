@@ -4,7 +4,7 @@ import express from 'express';
 import session from 'express-session';
 import passport from './authenticate';
 import bodyParser from 'body-parser';
-import {loadUsers} from './seedData'
+import {loadUsers, loadMovies} from './seedData';
 import moviesRouter from './api/movies';
 import usersRouter from './api/users';
 import genresRouter from './api/genres'
@@ -26,6 +26,7 @@ const errHandler = (err, req, res, next) => {
 
 if (process.env.SEED_DB) {
   loadUsers();
+  loadMovies();
 }
 
 //session middleware
