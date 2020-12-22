@@ -1,12 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Redirect, Switch, Link } from "react-router-dom";
-import { PublicPage, Movies, Profile, HomePage } from "./pages";
-import LoginPage from "./loginPage";
-import SignUpPage from "./signUpPage";
-import PrivateRoute from "./privateRoute";
-import AuthHeader from "./authHeader";
-import AuthProvider from "./authContext";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter, Route, Redirect, Switch, Link } from 'react-router-dom'
+import { PublicPage, Movies, Profile, HomePage } from './pages'
+import MovieProvider from './moviesContext'
+import LoginPage from './loginPage'
+import SignUpPage from './signUpPage'
+import PrivateRoute from './privateRoute'
+import AuthHeader from './authHeader'
+import AuthProvider from './authContext'
 
 const App = () => {
   return (
@@ -27,18 +28,20 @@ const App = () => {
             <Link to="/profile">Profile</Link>
           </li>
         </ul>
-        <Switch>
-          <Route path="/public" component={PublicPage} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/signup" component={SignUpPage} />,
-          <Route exact path="/" component={HomePage} />
-          <PrivateRoute path="/movies" component={Movies} />
-          <PrivateRoute path="/profile" component={Profile} />
-          <Redirect from="*" to="/" />
-        </Switch>
+        <MovieProvider>
+          <Switch>
+            <Route path="/public" component={PublicPage} />
+            <Route path="/login" component={LoginPage} />
+            <Route path="/signup" component={SignUpPage} />,
+            <Route exact path="/" component={HomePage} />
+            <PrivateRoute path="/movies" component={Movies} />
+            <PrivateRoute path="/profile" component={Profile} />
+            <Redirect from="*" to="/" />
+          </Switch>
+        </MovieProvider>
       </AuthProvider>
     </BrowserRouter>
-  );
-};
+  )
+}
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'))
