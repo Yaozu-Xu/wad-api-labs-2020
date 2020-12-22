@@ -3,16 +3,6 @@ import bcrypt from 'bcrypt-nodejs';
 
 const Schema = mongoose.Schema;
 
-const MovieSchema = new Schema({
-    id: {
-        type: Number,
-        required: true
-    },
-    title: {
-        type: String,
-        required: true
-    }
-});
 
 const UserSchema = new Schema({
     username: {
@@ -24,7 +14,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    favourites: [MovieSchema]
+    favourites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movies'}]
 });
 
 UserSchema.statics.findByUserName = function (username) {
